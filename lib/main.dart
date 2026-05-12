@@ -1,60 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:ppkd_b6/container.dart';
+import 'package:ppkd_b6/profile.dart';
+import 'package:ppkd_b6/scafold.dart';
+import 'package:ppkd_b6/sizebox.dart';
 
 void main() {
-  runApp(const ProfileSaya());
+  runApp(const MyApp());
 }
 
-class ProfileSaya extends StatelessWidget {
-  const ProfileSaya({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Profil Saya'),
-          backgroundColor: Colors.red[900],
-          foregroundColor: Colors.white,
-          centerTitle: true,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Text(
-                'Nama: Aryo Putranto Pramudityas',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-
-              const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.location_on),
-                  SizedBox(width: 5),
-                  Text(
-                    'Jakarta Timur',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 12),
-
-              const Text(
-                'Mahasiswa asal Jakarta yang suka dengan coding',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        // This is the theme of your application.
+        //
+        // TRY THIS: Try running your application with "flutter run". You'll see
+        // the application has a purple toolbar. Then, without quitting the app,
+        // try changing the seedColor in the colorScheme below to Colors.green
+        // and then invoke "hot reload" (save your changes or press the "hot
+        // reload" button in a Flutter-supported IDE, or press "r" if you used
+        // the command line to start the app).
+        //
+        // Notice that the counter didn't reset back to zero; the application
+        // state is not lost during the reload. To reset the state, use hot
+        // restart instead.
+        //
+        // This works for code too, not just values: Most code changes can be
+        // tested with just a hot reload.
+        colorScheme: .fromSeed(
+          seedColor: const Color.fromARGB(255, 177, 12, 12),
+          // Warna.biru
         ),
       ),
+      home: Profile(),
     );
   }
 }
