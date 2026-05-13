@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ppkd_b6/container.dart';
-import 'package:ppkd_b6/profile.dart';
-import 'package:ppkd_b6/scafold.dart';
-import 'package:ppkd_b6/sizebox.dart';
+import 'package:ppkd_b6/grid.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,7 +34,7 @@ class MyApp extends StatelessWidget {
           // Warna.biru
         ),
       ),
-      home: Profile(),
+      home: LayoutingGrid(),
     );
   }
 }
