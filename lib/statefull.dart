@@ -19,7 +19,7 @@ class _StateFullState extends State<StateFull> {
         title: Text("JagaDosis"),
         centerTitle: true,
         backgroundColor: Colors.blueAccent,
-        foregroundColor: Colors.white,
+        foregroundColor: Colors.green,
       ),
       body: SingleChildScrollView(
         child: Column(
