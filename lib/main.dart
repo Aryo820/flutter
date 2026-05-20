@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ppkd_b6/daftar.dart';
 import 'package:ppkd_b6/login.dart';
 
 void main() {
@@ -16,11 +17,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF005AB6),
-        ),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF005AB6)),
       ),
-      home: LoginScreen(),
+      // home: LoginScreen(),
+      initialRoute: LoginScreen.routeName,
+
+      routes: {
+        LoginScreen.routeName: (context) => const LoginScreen(),
+        Daftar.routeName: (context) => const Daftar(),
+      },
     );
   }
 }
