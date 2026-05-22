@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ppkd_b6/daftar.dart';
-import 'package:ppkd_b6/login.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:ppkd_b6/navigation.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('id_ID', " ");
   runApp(const MyApp());
 }
 
@@ -19,13 +21,13 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF005AB6)),
       ),
-      // home: LoginScreen(),
-      initialRoute: LoginScreen.routeName,
+      home: InteractiveFormPage(),
+      // initialRoute: LoginScreen.routeName,
 
-      routes: {
-        LoginScreen.routeName: (context) => const LoginScreen(),
-        Daftar.routeName: (context) => const Daftar(),
-      },
+      // routes: {
+      //   LoginScreen.routeName: (context) => const LoginScreen(),
+      //   Daftar.routeName: (context) => const Daftar(),
+      // },
     );
   }
 }
