@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:ppkd_b6/form_page.dart';
+import 'package:ppkd_b6/flutter9/views/list_with_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF005AB6)),
       ),
-      home: FormPage2(),
+      home: ListWithModelDataDay16(),
       // initialRoute: LoginScreen.routeName,
 
       // routes: {
