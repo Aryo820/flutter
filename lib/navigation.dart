@@ -19,52 +19,6 @@ class _InteractiveFormPageState extends State<InteractiveFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: _isDarkMode ? Colors.black : Colors.white,
-      appBar: AppBar(
-        title: Text(
-          "JagaDosis",
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  // Icon(Icons.menu_book, size: 48, color: Colors.white),
-                  SizedBox(height: 12),
-                  Text(
-                    'Menu',
-                    style: TextStyle(color: Colors.white, fontSize: 24),
-                  ),
-                  Text('Form Input', style: TextStyle(color: Colors.white70)),
-                ],
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.import_contacts),
-              title: Text("Syarat & Ketentuan"),
-            ),
-            ListTile(leading: Icon(Icons.sunny), title: Text("Mode Tampilan")),
-            ListTile(
-              leading: Icon(Icons.category),
-              title: Text("Kategori Produk"),
-            ),
-            ListTile(
-              leading: Icon(Icons.date_range),
-              title: Text("Pilih Tanggal"),
-            ),
-            ListTile(leading: Icon(Icons.alarm), title: Text("Pilih Jam")),
-          ],
-        ),
-      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -97,7 +51,7 @@ class _InteractiveFormPageState extends State<InteractiveFormPage> {
                         //     fontWeight: FontWeight.bold,
                         //   ),
                         // ),
-                        SizedBox(height: 8),
+                        SizedBox(width: 8),
                         Container(
                           padding: EdgeInsets.all(12),
                           child: Text(
@@ -115,7 +69,7 @@ class _InteractiveFormPageState extends State<InteractiveFormPage> {
                 ),
               ),
             ),
-            SizedBox(height: 12),
+            SizedBox(width: 8),
             Card(
               child: Padding(
                 padding: EdgeInsets.all(12),
