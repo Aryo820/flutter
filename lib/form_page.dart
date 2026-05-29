@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:ppkd_b6/listview.dart';
+import 'package:ppkd_b6/local/database/preferences.dart';
+import 'package:ppkd_b6/login.dart';
 import 'package:ppkd_b6/navigation.dart';
 import 'package:ppkd_b6/profile.dart';
 
 class FormPage2 extends StatefulWidget {
+  static const String routeName = '/form_page';
   const FormPage2({super.key});
 
   @override
@@ -17,6 +20,17 @@ class _FormPage2State extends State<FormPage2> {
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
   int _selectedIndex = 0;
+
+  void _logOut() async {
+    await PreferenceHandler.logOut();
+
+    if (!mounted) return;
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+      (route) => false,
+    );
+  }
 
   // ignore: prefer_final_fields
   List<Widget> _widgetOptions = <Widget>[
@@ -66,17 +80,38 @@ class _FormPage2State extends State<FormPage2> {
             ListTile(
               leading: Icon(Icons.import_contacts),
               title: Text("Syarat & Ketentuan"),
+              selected: _selectedIndex == 0,
+              onTap: () {
+                _onItemTapped(0);
+              },
             ),
             ListTile(leading: Icon(Icons.sunny), title: Text("Mode Tampilan")),
             ListTile(
               leading: Icon(Icons.category),
               title: Text("Kategori Produk"),
+              onTap: () {
+                _onItemTapped(1);
+              },
             ),
             ListTile(
               leading: Icon(Icons.date_range),
               title: Text("Pilih Tanggal"),
+              onTap: () {
+                _onItemTapped(2);
+              },
             ),
-            ListTile(leading: Icon(Icons.alarm), title: Text("Pilih Jam")),
+            ListTile(
+              leading: Icon(Icons.alarm),
+              title: Text("Pilih Jam"),
+              onTap: () {
+                _onItemTapped(3);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text("Log Out"),
+              onTap: _logOut,
+            ),
           ],
         ),
       ),

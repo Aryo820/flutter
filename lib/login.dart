@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ppkd_b6/daftar.dart';
+import 'package:ppkd_b6/form_page.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -128,6 +129,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                   return AlertDialog(
                                     title: Text("Login Berhasil"),
                                     content: Text("Selamat Datang"),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pushNamed(
+                                            context,
+                                            FormPage2.routeName,
+                                          );
+                                        },
+                                        child: Text("Lanjut"),
+                                      ),
+                                    ],
                                   );
                                 },
                               );
