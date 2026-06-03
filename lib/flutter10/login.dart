@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ppkd_b6/daftar.dart';
+import 'package:ppkd_b6/flutter10/registration.dart';
 import 'package:ppkd_b6/form_page.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -72,10 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           hintText: "Masukkan Email",
                           filled: true,
                           fillColor: Colors.grey[300],
-                          border: OutlineInputBorder(
-                            // borderRadius: BorderRadius.circular(12),
-                            // borderSide: BorderSide(color: Colors.blue),
-                          ),
+                          border: OutlineInputBorder(),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -105,20 +102,26 @@ class _LoginScreenState extends State<LoginScreen> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: 16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
                             "Lupa Password?",
-                            style: TextStyle(color: Colors.blue),
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 4, 104, 235),
+                            ),
                           ),
                         ],
                       ),
                       SizedBox(
                         width: double.infinity,
+                        height: 56,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                             backgroundColor: Color.fromARGB(255, 4, 104, 235),
                           ),
                           onPressed: () {
@@ -151,33 +154,27 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                          ),
-                          onPressed: () {
-                            Navigator.pushNamed(context, Daftar.routeName);
-                            // if (_formKey.currentState!.validate()) {
-                            //   showDialog(
-                            //     context: context,
-                            //     builder: (BuildContext context) {
-                            //       return AlertDialog(
-                            //         title: Text("Login Berhasil"),
-                            //         content: Text("Selamat Datang"),
-                            //       );
-                            //     },
-                            //   );
-                            // }
-                          },
-                          child: Text(
-                            "Daftar",
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 4, 104, 235),
+                      SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Belum Punya Akun? "),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, Daftar.routeName);
+                            },
+                            style: TextButton.styleFrom(
+                              foregroundColor: Color.fromARGB(255, 4, 104, 235),
+                              padding: EdgeInsets.zero,
+                              minimumSize: Size(50, 30),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            child: Text(
+                              "Daftar Sekarang",
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
                   ),

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ppkd_b6/login.dart';
+import 'package:ppkd_b6/flutter10/login.dart';
 
 class SplashScreen extends StatefulWidget {
   static const routeName = '/splash';

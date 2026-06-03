@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:ppkd_b6/flutter10/registration.dart';
-import 'package:ppkd_b6/form_page.dart';
+import 'package:ppkd_b6/database/views/home.dart';
+import 'package:ppkd_b6/database/views/logins.dart';
+import 'package:ppkd_b6/database/views/registrations.dart';
 import 'package:ppkd_b6/local/database/preferences.dart';
 import 'package:ppkd_b6/local/views/splash.dart';
-import 'package:ppkd_b6/login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,9 +31,12 @@ class MyApp extends StatelessWidget {
 
       routes: {
         SplashScreen.routeName: (context) => const SplashScreen(),
-        LoginScreen.routeName: (context) => const LoginScreen(),
+        // LoginScreen.routeName: (context) => const LoginScreen(),
+        LoginScreen2.routeName: (context) => const LoginScreen2(),
+        // Daftar.routeName: (context) => const Daftar(),
         Daftar2.routeName: (context) => const Daftar2(),
-        FormPage2.routeName: (context) => const FormPage2(),
+        // FormPage2.routeName: (context) => const FormPage2(),
+        Home.routeName: (context) => const Home(),
       },
     );
   }

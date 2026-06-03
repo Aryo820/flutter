@@ -1,32 +1,68 @@
 import 'package:flutter/material.dart';
-import 'package:ppkd_b6/flutter10/confirm.dart';
+import 'package:ppkd_b6/database/db/db_helper.dart';
+import 'package:ppkd_b6/database/models/user_model_sql.dart';
+import 'package:ppkd_b6/database/views/logins.dart';
 
-class Daftar extends StatefulWidget {
-  const Daftar({super.key});
-  static const String routeName = '/daftar';
+class Daftar2 extends StatefulWidget {
+  const Daftar2({super.key});
+  static const String routeName = '/registrations';
 
   @override
-  State<Daftar> createState() => _DaftarState();
+  State<Daftar2> createState() => _Daftar2State();
 }
 
-class _DaftarState extends State<Daftar> {
+class _Daftar2State extends State<Daftar2> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  void register() async {
+    final name = nameController.text.trim();
+    final email = emailController.text.trim();
+    final pass = passwordController.text;
 
-  // Controllers to capture input values
-  final _namaController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _nomorHpController = TextEditingController();
-  final _kotaController = TextEditingController();
+    if (email.isEmpty || pass.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Isi semua field woi!')));
+      return;
+    }
 
-  @override
-  void dispose() {
-    _namaController.dispose();
-    _emailController.dispose();
-    _nomorHpController.dispose();
-    _kotaController.dispose();
-    super.dispose();
+    final user = UserModelSql(name: name, email: email, password: pass);
+    bool success = await DBHelper().registerUser(user);
+
+    // Cek apakah widget masih terpasang (mounted) sebelum menggunakan context
+    if (!mounted) return;
+
+    if (success) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Akun berhasil dibuat')));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => LoginScreen2()),
+      );
+
+      // Tambahkan navigasi ke halaman login jika perlu
+    } else {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Email sudah terdaftar!')));
+    }
   }
 
+  // Controllers untuk nama, email, dan password
+  // final _namaController = TextEditingController();
+  // final _emailController = TextEditingController();
+  // final _passwordController = TextEditingController();
+
+  // @override
+  // void dispose() {
+  //   _namaController.dispose();
+  //   _emailController.dispose();
+  //   _passwordController.dispose();
+  //   super.dispose();
+  // }
   void _onDaftarPressed() {
     if (_formKey.currentState!.validate()) {
       // Valid → show summary dialog
@@ -39,18 +75,11 @@ class _DaftarState extends State<Daftar> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _summaryRow('Nama Lengkap', _namaController.text),
+                _summaryRow('Nama Lengkap', nameController.text),
                 const SizedBox(height: 8),
-                _summaryRow('Email', _emailController.text),
+                _summaryRow('Email', emailController.text),
                 const SizedBox(height: 8),
-                _summaryRow(
-                  'Nomor HP',
-                  _nomorHpController.text.isEmpty
-                      ? '-'
-                      : _nomorHpController.text,
-                ),
-                const SizedBox(height: 8),
-                _summaryRow('Kota Asal', _kotaController.text),
+                _summaryRow('Password', '*' * passwordController.text.length),
               ],
             ),
             actions: [
@@ -65,19 +94,15 @@ class _DaftarState extends State<Daftar> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromARGB(255, 4, 104, 235),
                 ),
-                onPressed: () {
-                  // Close dialog first, then navigate
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => KonfirmasiScreen(
-                        namaLengkap: _namaController.text,
-                        kota: _kotaController.text,
-                      ),
-                    ),
-                  );
-                },
+                onPressed: register,
+                // () {
+                //   // Close dialog first, then navigate
+                //   Navigator.pop(context);
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(builder: (_) => Home()),
+                //   );
+                // },
                 child: const Text(
                   'Lanjut',
                   style: TextStyle(color: Colors.white),
@@ -115,7 +140,7 @@ class _DaftarState extends State<Daftar> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 20),
-              // ── Header identical to login ──────────────────────────────
+              // ── Header ──────────────────────────────
               Center(
                 child: Column(
                   children: [
@@ -164,12 +189,15 @@ class _DaftarState extends State<Daftar> {
                       // 1. Nama Lengkap (wajib)
                       const Text('Nama Lengkap'),
                       TextFormField(
-                        controller: _namaController,
+                        controller: nameController,
                         decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.person),
                           hintText: 'Masukkan Nama Lengkap',
                           filled: true,
-                          fillColor: Colors.grey[300],
-                          border: const OutlineInputBorder(),
+                          fillColor: Color(0xffF5F7FA),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -183,13 +211,16 @@ class _DaftarState extends State<Daftar> {
                       // 2. Email (wajib, harus mengandung @)
                       const Text('Email'),
                       TextFormField(
-                        controller: _emailController,
+                        controller: emailController,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.email),
                           hintText: 'Masukkan Email',
                           filled: true,
-                          fillColor: Colors.grey[300],
-                          border: const OutlineInputBorder(),
+                          fillColor: Color(0xffF5F7FA),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -202,16 +233,19 @@ class _DaftarState extends State<Daftar> {
                       ),
                       const SizedBox(height: 16),
 
-                      // 3. Nomor HP (opsional)
+                      // 3. Password (wajib)
                       const Text('Password'),
                       TextFormField(
-                        controller: _nomorHpController,
-                        keyboardType: TextInputType.phone,
+                        controller: passwordController,
+                        obscureText: true, // Menyembunyikan teks password
                         decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.lock),
                           hintText: 'Masukkan Password',
                           filled: true,
-                          fillColor: Colors.grey[300],
-                          border: const OutlineInputBorder(),
+                          fillColor: Color(0xffF5F7FA),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -249,17 +283,26 @@ class _DaftarState extends State<Daftar> {
                       const SizedBox(height: 8),
 
                       // ── TextButton: back to login ────────────────────────
-                      Center(
-                        child: TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text(
-                            'Sudah Punya Akun? Masuk',
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 4, 104, 235),
-                              fontWeight: FontWeight.w500,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Sudah punya akun?"),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            style: TextButton.styleFrom(
+                              foregroundColor: Color.fromARGB(255, 4, 104, 235),
+                              padding: EdgeInsets.zero,
+                              minimumSize: Size(50, 30),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            child: Text(
+                              "Masuk Di Sini",
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
                   ),
