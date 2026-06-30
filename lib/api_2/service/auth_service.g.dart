@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'api_services.dart';
+part of 'auth_service.dart';
 
 // dart format off
 
@@ -10,9 +10,9 @@ part of 'api_services.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations,unused_element_parameter,avoid_unused_constructor_parameters,unreachable_from_main,avoid_redundant_argument_values
 
-class _ApiService implements ApiService {
-  _ApiService(this._dio, {this.baseUrl, this.errorLogger}) {
-    baseUrl ??= 'https://rickandmortyapi.com';
+class _AuthService implements AuthService {
+  _AuthService(this._dio, {this.baseUrl, this.errorLogger}) {
+    baseUrl ??= 'https://absensib1.mobileprojp.com';
   }
 
   final Dio _dio;
@@ -22,26 +22,26 @@ class _ApiService implements ApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<PostModelsRick> getAllPosts({int? page}) async {
+  Future<AuthResponse> register(Map<String, dynamic> body) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'page': page};
-    queryParameters.removeWhere((k, v) => v == null);
+    final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<PostModelsRick>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
+    final _options = _setStreamType<AuthResponse>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/character',
+            '/api/register',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late PostModelsRick _value;
+    late AuthResponse _value;
     try {
-      _value = PostModelsRick.fromJson(_result.data!);
+      _value = AuthResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -50,38 +50,26 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<PostModelsRick> getCharacters({
-    int? page,
-    String? name,
-    String? status,
-    String? species,
-    String? gender,
-  }) async {
+  Future<AuthResponse> login(Map<String, dynamic> body) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'page': page,
-      r'name': name,
-      r'status': status,
-      r'species': species,
-      r'gender': gender,
-    };
-    queryParameters.removeWhere((k, v) => v == null);
+    final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<PostModelsRick>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
+    final _options = _setStreamType<AuthResponse>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/character',
+            '/api/login',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late PostModelsRick _value;
+    late AuthResponse _value;
     try {
-      _value = PostModelsRick.fromJson(_result.data!);
+      _value = AuthResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -90,26 +78,25 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<EpisodeResponse> getEpisodes({int? page, String? name}) async {
+  Future<ProfileResponse> getProfile() async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'page': page, r'name': name};
-    queryParameters.removeWhere((k, v) => v == null);
+    final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<EpisodeResponse>(
+    final _options = _setStreamType<ProfileResponse>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/episode',
+            '/api/profile',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late EpisodeResponse _value;
+    late ProfileResponse _value;
     try {
-      _value = EpisodeResponse.fromJson(_result.data!);
+      _value = ProfileResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -118,26 +105,26 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<LocationResponse> getLocations({int? page, String? name}) async {
+  Future<ProfileResponse> updateProfile(Map<String, dynamic> body) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'page': page, r'name': name};
-    queryParameters.removeWhere((k, v) => v == null);
+    final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<LocationResponse>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
+    final _options = _setStreamType<ProfileResponse>(
+      Options(method: 'PUT', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/location',
+            '/api/profile',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late LocationResponse _value;
+    late ProfileResponse _value;
     try {
-      _value = LocationResponse.fromJson(_result.data!);
+      _value = ProfileResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
