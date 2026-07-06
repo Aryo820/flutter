@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ppkd_b6/api_3/service/token_storage.dart';
+import 'package:ppkd_b6/api_3/views/home_page.dart';
 import 'package:ppkd_b6/api_3/views/login_page.dart';
-import 'package:ppkd_b6/api_3/views/profile_page.dart';
 
 /// SplashScreen: mengecek token di secure storage.
-/// Jika token ada → langsung ke ProfilePage (tidak perlu login ulang).
+/// Jika token ada → langsung ke HomePage (tidak perlu login ulang).
 /// Jika tidak ada  → ke LoginPage.
 class AbsensiSplashScreen extends StatelessWidget {
   const AbsensiSplashScreen({super.key});
@@ -49,7 +49,7 @@ class AbsensiSplashScreen extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => const ProfilePage(),
+                  builder: (_) => const HomePage(),
                 ),
               );
             } else {

@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:ppkd_b6/api_3/models/auth_response.dart';
+import 'package:ppkd_b6/api_3/models/batch_model.dart';
 import 'package:ppkd_b6/api_3/models/profile_response.dart';
+import 'package:ppkd_b6/api_3/models/training_model.dart';
+import 'package:ppkd_b6/api_3/models/user_model.dart';
 import 'package:ppkd_b6/api_3/service/dio_client.dart';
 import 'package:ppkd_b6/api_3/service/token_storage.dart';
 
@@ -94,6 +97,42 @@ class AuthService {
       data: {'profile_photo': base64Image},
     );
     return ProfileResponse.fromJson(response.data);
+  }
+
+  // ─────────────────────────────────────────────
+  // 6. LIST TRAININGS (publik)
+  // GET /api/trainings
+  // ─────────────────────────────────────────────
+  Future<List<Training>> getTrainings() async {
+    final response = await _dio.get('/api/trainings');
+    return TrainingListResponse.fromJson(response.data).data;
+  }
+
+  // ─────────────────────────────────────────────
+  // 7. DETAIL TRAINING (publik)
+  // GET /api/trainings/{id}
+  // ─────────────────────────────────────────────
+  Future<TrainingDetail?> getTrainingDetail(int id) async {
+    final response = await _dio.get('/api/trainings/$id');
+    return TrainingDetailResponse.fromJson(response.data).data;
+  }
+
+  // ─────────────────────────────────────────────
+  // 8. LIST BATCHES (publik)
+  // GET /api/batches
+  // ─────────────────────────────────────────────
+  Future<List<Batch>> getBatches() async {
+    final response = await _dio.get('/api/batches');
+    return BatchListResponse.fromJson(response.data).data;
+  }
+
+  // ─────────────────────────────────────────────
+  // 9. ALL USERS (membutuhkan Bearer token)
+  // GET /api/users
+  // ─────────────────────────────────────────────
+  Future<List<UserModel>> getUsers() async {
+    final response = await _dio.get('/api/users');
+    return UserListResponse.fromJson(response.data).data;
   }
 
   // ─────────────────────────────────────────────

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:ppkd_b6/api_3/service/auth_service.dart';
-import 'package:ppkd_b6/api_3/views/profile_page.dart';
+import 'package:ppkd_b6/api_3/views/home_page.dart';
 import 'package:ppkd_b6/api_3/views/register_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -36,10 +36,10 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       if (!mounted) return;
-      // Login berhasil → ke ProfilePage
+      // Login berhasil → ke HomePage
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const ProfilePage()),
+        MaterialPageRoute(builder: (_) => const HomePage()),
       );
     } on DioException catch (e) {
       final msg = e.response?.data['message'] ?? 'Terjadi kesalahan jaringan';

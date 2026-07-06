@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:ppkd_b6/api_3/models/batch_model.dart';
+import 'package:ppkd_b6/api_3/models/training_model.dart';
 import 'package:ppkd_b6/api_3/service/auth_service.dart';
-import 'package:ppkd_b6/api_3/views/profile_page.dart';
+import 'package:ppkd_b6/api_3/views/home_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -15,8 +17,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _batchIdController = TextEditingController(text: '1');
-  final _trainingIdController = TextEditingController(text: '1');
   final _authService = AuthService();
 
   bool _isLoading = false;
@@ -24,8 +24,54 @@ class _RegisterPageState extends State<RegisterPage> {
   String _jenisKelamin = 'L';
   String? _errorMessage;
 
+  // Data dropdown dari API
+  bool _isLoadingOptions = true;
+  String? _optionsError;
+  List<Batch> _batches = [];
+  List<Training> _trainings = [];
+  int? _selectedBatchId;
+  int? _selectedTrainingId;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadOptions();
+  }
+
+  Future<void> _loadOptions() async {
+    setState(() {
+      _isLoadingOptions = true;
+      _optionsError = null;
+    });
+    try {
+      final results = await Future.wait([
+        _authService.getBatches(),
+        _authService.getTrainings(),
+      ]);
+      if (!mounted) return;
+      setState(() {
+        _batches = results[0] as List<Batch>;
+        _trainings = results[1] as List<Training>;
+        _selectedBatchId = _batches.isNotEmpty ? _batches.first.id : null;
+        _selectedTrainingId =
+            _trainings.isNotEmpty ? _trainings.first.id : null;
+        _isLoadingOptions = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _optionsError = 'Gagal memuat data batch/pelatihan: $e';
+        _isLoadingOptions = false;
+      });
+    }
+  }
+
   Future<void> _register() async {
     if (!_formKey.currentState!.validate()) return;
+    if (_selectedBatchId == null || _selectedTrainingId == null) {
+      setState(() => _errorMessage = 'Batch dan Pelatihan wajib dipilih');
+      return;
+    }
 
     setState(() {
       _isLoading = true;
@@ -38,15 +84,15 @@ class _RegisterPageState extends State<RegisterPage> {
         email: _emailController.text.trim(),
         password: _passwordController.text,
         jenisKelamin: _jenisKelamin,
-        batchId: int.tryParse(_batchIdController.text) ?? 1,
-        trainingId: int.tryParse(_trainingIdController.text) ?? 1,
+        batchId: _selectedBatchId!,
+        trainingId: _selectedTrainingId!,
       );
 
       if (!mounted) return;
-      // Register berhasil → ke ProfilePage (token sudah tersimpan)
+      // Register berhasil → ke HomePage (token sudah tersimpan)
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (_) => const ProfilePage()),
+        MaterialPageRoute(builder: (_) => const HomePage()),
         (route) => false,
       );
     } on DioException catch (e) {
@@ -74,9 +120,91 @@ class _RegisterPageState extends State<RegisterPage> {
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _batchIdController.dispose();
-    _trainingIdController.dispose();
     super.dispose();
+  }
+
+  Widget _buildOptionsSection() {
+    if (_isLoadingOptions) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 12),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 18,
+              height: 18,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
+            SizedBox(width: 12),
+            Text('Memuat data batch & pelatihan...',
+                style: TextStyle(color: Colors.grey)),
+          ],
+        ),
+      );
+    }
+
+    if (_optionsError != null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(_optionsError!,
+              style: const TextStyle(color: Colors.red, fontSize: 13)),
+          const SizedBox(height: 8),
+          OutlinedButton.icon(
+            onPressed: _loadOptions,
+            icon: const Icon(Icons.refresh, size: 18),
+            label: const Text('Muat Ulang'),
+          ),
+        ],
+      );
+    }
+
+    return Column(
+      children: [
+        // Pelatihan
+        DropdownButtonFormField<int>(
+          value: _selectedTrainingId,
+          isExpanded: true,
+          decoration: InputDecoration(
+            labelText: 'Pelatihan',
+            prefixIcon: const Icon(Icons.school_outlined),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12)),
+          ),
+          items: _trainings
+              .map((t) => DropdownMenuItem(
+                    value: t.id,
+                    child: Text(t.title ?? 'Pelatihan ${t.id}',
+                        overflow: TextOverflow.ellipsis),
+                  ))
+              .toList(),
+          onChanged: (v) => setState(() => _selectedTrainingId = v),
+          validator: (v) => v == null ? 'Pilih pelatihan' : null,
+        ),
+        const SizedBox(height: 16),
+
+        // Batch
+        DropdownButtonFormField<int>(
+          value: _selectedBatchId,
+          isExpanded: true,
+          decoration: InputDecoration(
+            labelText: 'Batch',
+            prefixIcon: const Icon(Icons.group_outlined),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12)),
+          ),
+          items: _batches
+              .map((b) => DropdownMenuItem(
+                    value: b.id,
+                    child: Text(
+                        b.batchKe != null ? 'Batch ${b.batchKe}' : 'Batch ${b.id}',
+                        overflow: TextOverflow.ellipsis),
+                  ))
+              .toList(),
+          onChanged: (v) => setState(() => _selectedBatchId = v),
+          validator: (v) => v == null ? 'Pilih batch' : null,
+        ),
+      ],
+    );
   }
 
   @override
@@ -236,40 +364,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         const SizedBox(height: 16),
 
-                        // Batch ID & Training ID
-                        Row(
-                          children: [
-                            Expanded(
-                              child: TextFormField(
-                                controller: _batchIdController,
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  labelText: 'Batch ID',
-                                  prefixIcon: const Icon(Icons.group_outlined),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12)),
-                                ),
-                                validator: (v) =>
-                                    (v == null || v.isEmpty) ? 'Wajib' : null,
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: TextFormField(
-                                controller: _trainingIdController,
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  labelText: 'Training ID',
-                                  prefixIcon: const Icon(Icons.school_outlined),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12)),
-                                ),
-                                validator: (v) =>
-                                    (v == null || v.isEmpty) ? 'Wajib' : null,
-                              ),
-                            ),
-                          ],
-                        ),
+                        // Batch & Training (dropdown dari API)
+                        _buildOptionsSection(),
                         const SizedBox(height: 24),
 
                         // Tombol Register

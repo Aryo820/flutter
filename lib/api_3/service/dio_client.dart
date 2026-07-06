@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:ppkd_b6/api_3/service/token_storage.dart';
 
 class DioClient {
-  static const String _baseUrl = 'https://absensib1.mobileprojp.com';
+  static const String _baseUrl = 'https://appabsensi.mobileprojp.com';
 
   static Dio create() {
     final dio = Dio(
